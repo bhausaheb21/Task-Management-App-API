@@ -6,9 +6,9 @@ class AuthController {
     static async signup(req, res, next) {
         try {
             const errors = validationResult(req).array();
-            if (error.length > 0) {
+            if (errors.length > 0) {
 
-                const error = new Error(error[0].msg)
+                const error = new Error(errors[0].msg)
                 error.status = 422;
                 throw error;
             }
@@ -45,9 +45,9 @@ class AuthController {
     static async login(req, res, next) {
         try {
             const errors = validationResult(req).array();
-            if (error.length > 0) {
+            if (errors.length > 0) {
 
-                const error = new Error(error[0].msg)
+                const error = new Error(errors[0].msg)
                 error.status = 422;
                 throw error;
             }
