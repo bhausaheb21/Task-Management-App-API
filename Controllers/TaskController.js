@@ -44,6 +44,7 @@ class TaskController {
                 throw error;
             }
             task.status = "Completed";
+            task.completed_time = new Date()
             const updatedtask = await task.save();
             return res.status(201).json({ message: "Task Updated Successfully", task: updatedtask })
         } catch (error) {
