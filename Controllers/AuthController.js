@@ -1,9 +1,17 @@
+const { validationResult } = require("express-validator");
 const { User } = require("../Models");
 const { getSalt, encryptPass, getToken } = require("../Services/authUtility");
 const bcrypt = require('bcryptjs')
 class AuthController {
     static async signup(req, res, next) {
         try {
+            const errors = validationResult(req).array();
+            if (error.length > 0) {
+
+                const error = new Error(error[0].msg)
+                error.status = 422;
+                throw error;
+            }
             const { email, firstName, password, lastName } = req.body;
             const user = await User.findOne({ email: email })
 
@@ -36,6 +44,13 @@ class AuthController {
 
     static async login(req, res, next) {
         try {
+            const errors = validationResult(req).array();
+            if (error.length > 0) {
+
+                const error = new Error(error[0].msg)
+                error.status = 422;
+                throw error;
+            }
             const { email, password } = req.body;
             const user = await User.findOne({ email: email });
             if (!user) {
