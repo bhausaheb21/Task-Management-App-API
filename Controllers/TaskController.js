@@ -6,7 +6,9 @@ class TaskController {
     static async getAlltasks(req, res, next) {
         try {
             const user = req.user;
+            console.log(user);
             const tasks = await User.findById(user._id).populate('tasks');
+            console.log(tasks);
             return res.status(200).json({ message: "Task Fetched Successfully", tasks: tasks.tasks })
         } catch (error) {
             next(error)
@@ -70,7 +72,7 @@ class TaskController {
                 throw error;
             }
             const result = await Task.findByIdAndDelete(task._id);
-            req.user.tasks.pop(task._id);
+            req.user.tasks = req.user.tasks.filter(taskId => taskId.toString() !== id);
             await req.user.save();
             return res.status(200).json({ message: "Deleted Successfully", result })
         } catch (error) {
@@ -82,6 +84,7 @@ class TaskController {
         try {
             const filter = req.params.filter;
             const tasks = await Task.find({ _id: { $in: req.user.tasks }, status: filter })
+            
             return res.status(200).json({ message: "Filtered Successfully", tasks })
         }
         catch (err) {
